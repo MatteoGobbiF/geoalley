@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Photo</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h1 style="text-align: center;">Edit Photo</h1>
+
+<form method="post" th:action="@{/photo/delete/{id}(id=${photo.id})}">
+	<button type="submit">Delete Photo</button>
+</form>
+
+<form method="post" th:action="@{/photo/edit/{id}(id=${photo.id})}">
+	<div>
+		<label for="description">Description:</label>
+		<textarea name="description" rows="10" cols="60" th:text="${photo.description}"></textarea>
+	</div>
+	<button type="submit">Edit Description</button>
+</form>
+</body>
+</html>

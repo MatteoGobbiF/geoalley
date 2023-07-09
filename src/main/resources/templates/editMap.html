@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Map</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h1 style="text-align: center;">Edit Map</h1>
+
+<div th:if="${message}" th:text="${message}"></div>
+
+<form method="post" th:action="@{/delete/{id}(id=${map.id})}">
+	<button type="submit">Delete Map</button>
+</form>
+
+<form method="post" th:action="@{/edit/{id}(id=${map.id})}">
+	<div>
+		<label for="description">Description:</label>
+		<textarea name="description" rows="10" cols="60" th:text="${map.description}"></textarea>
+	</div>
+
+	<!-- Bottone per modificare solo la descrizione (la mappa non diventa detailed) -->
+	<button type="submit" name="description-only" id="description-only">Edit Description</button>
+	  
+	<h2>You have all the necessary map data? add them all below:</h2>
+	
+	<!-- Area dati per far diventare la mappa detailed  -->
+	<div>
+		<label for="title">Title:</label>
+		<input type="text" id="title" name="title" required >
+	</div>
+	<div>
+		<label for="tags">Tags separated by a comma (e.g.: tag1, tag2, tag3)</label>
+		<input type="text" id="tags" name="tags">
+	</div>
+
+	<div>
+		<label for="year">Year: (yyyy) for years BC type negative numbers (eg for 345 BC type -345)</label>
+		<input type="number" id="year" name="year" required>
+	</div>
+	<div>
+		<label for="exactYear">Is the year the exact year or an approximate year? (check if its exact):</label>
+		<input type="checkbox" id="exactYear" name="exactYear">
+	</div>
+	You can select latitude and longitude by clicking on the map below
+	<div>
+		<label for="latitude">Latitude:</label>
+		<input type="number" id="latitude" name="latitude" min="-180" max="+180" step="any" required>
+	</div>
+	<div>
+		<label for="longitude">Longitude:</label>
+		<input type="number" id="longitude" name="longitude" min="-180" max="+180" step="any" required>
+	</div>	
+	<button type="submit" name="all-data">Submit</button>
+</form>
+
+<!-- Inserimento google map -->
+<div id="map" style="width: 500px; height: 500px;"></div>
+
+<script>
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: -34.397, lng: 150.644},
+			zoom: 8
+		});
+	}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrgZTh4zqmHXlGnAF0Zc98Y4zLqHOsJKI&callback=initMap" async defer></script>
+
+<script>
+	function initMap() {
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 45.4642, lng: 9.1900},
+			zoom: 8
+		});
+		
+		google.maps.event.addListener(map, 'click', function(event) {
+			document.getElementById("latitude").value = event.latLng.lat();
+			document.getElementById("longitude").value = event.latLng.lng();
+		});
+	}
+</script>
+<script>
+	document.querySelectorAll("button[id='description-only']")[0].addEventListener("click", function(event) {
+		event.preventDefault();
+		document.querySelectorAll("input[required]").forEach(function(input) {
+			input.required = false;
+		});
+		this.form.submit();
+	});	
+</script>
+</body>
+</html>

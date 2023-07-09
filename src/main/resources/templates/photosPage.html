@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Photos</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h3>You have a photo and don't know where it was taken? Upload it <a href="/createPhoto">here</a></h3>
+
+<h2 style="text-align: center;">Help other users identify where a photo was taken</h2>
+
+<table style="margin: 0 auto;" th:if="${photos != null && !photos.isEmpty()}">
+	<tr>
+		<th>Id</th>
+		<th>Descripion</th>
+		<th>Link</th>
+	</tr>
+	<tr th:each="photo : ${photos}">
+		<td th:text="${photo.id}"></td>
+		<td th:text="${photo.description}"></td>
+		<td><a th:href="@{/photo/{id}(id=${photo.id})}" th:text="Open"></a></td>
+	</tr>
+</table>
+
+<p th:if="${photos == null || photos.isEmpty()}" style="text-align: center;">There are currently no photos</p>
+
+</body>
+</html>

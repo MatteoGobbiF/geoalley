@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<div th:fragment="map-and-search">
+		<div th:if="${message}" th:text="${message}"></div>
+			<h1 style="text-align: center;">Welcome to Geo Alley</h1>
+		
+			<div id ="map" style="width: 50%; height: 400px; margin: 0 auto;  text-align: center;"></div>
+		
+			<div style="text-align: center;">
+		
+			<button id="searchButton" style="float: center;" onclick="searchFromMap()">Search in this area</button>
+		
+			<p>Or search by keywords:</p>
+			<form action="/search" method="get">
+				<input type="text" name="query">
+				<input type="submit" value="Search">
+			</form>
+		</div>	
+	</div>
+</body>
+</html>

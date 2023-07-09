@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+<style>
+	.container {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.left-side, .right-side {
+		width: 45%;
+	}
+</style>
+</head>
+<body>
+<div th:insert="fragments/header :: block-header"></div>
+
+<h1>Admin page</h1>
+<div class="container">
+
+	<!-- Tabella report mappe -->
+	<div style="width: 33%;">
+		<h2>Open Reports</h2>
+		<table  th:if="${reports != null && !reports.isEmpty()}">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Content</th>
+					<th>Map</th>
+					<th>Close Report</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${reports}">
+					<td th:text="${report.id}"></td>
+					<td th:text="${report.description}"></td>
+					<td><a th:href="@{/map/{id}(id=${report.map.id})}">Open</a></td>
+					<td><a th:href="@{/closeReport/{id}(id=${report.id})}">Close Report</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:if="${reports == null || reports.isEmpty()}">There are no open reports</p>
+		<a th:href="@{/admin/allReports}">See closed reports</a>
+	</div>
+	
+	<!-- Tabella report foto -->
+	<div style="float: left; width: 33%;">
+		<h2>Open Photo Reports</h2>
+		<table  th:if="${reportPhotos != null && !reportPhotos.isEmpty()}">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Content</th>
+					<th>Photo</th>
+					<th>Close Report</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${reportPhotos}">
+					<td th:text="${report.id}"></td>
+					<td th:text="${report.description}"></td>
+					<td><a th:href="@{/photo/{id}(id=${report.photo.id})}">Open</a></td>
+					<td><a th:href="@{/closePhotoReport/{id}(id=${report.id})}">Close Report</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:if="${reportPhotos == null || reportPhotos.isEmpty()}">There are no open reports on photos</p>
+		<a th:href="@{/admin/allReports}">See closed reports</a>
+	</div>
+	
+	<!-- Tabella utenti -->
+	<div style="float: left; width: 33%;">
+		<h2>All Users</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Profile</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.id}"></td>
+					<td th:text="${user.username}"></td>
+					<td th:text="${user.email}"></td>
+					<td><a th:href="@{/profile/{id}(id=${user.id})}">Open</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

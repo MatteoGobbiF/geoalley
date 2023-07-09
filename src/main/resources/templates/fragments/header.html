@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<header th:fragment="block-header">
+		<nav>
+			<a th:unless="${session.user}" th:href="@{/login}" th:text="Login"></a>
+			<a th:if="${session.user}" th:href="@{/profile/{id}(id=${session.user.id})}" th:text="${session.user.username}"></a>
+			<a th:href="@{/}">Home</a>
+			<a th:href="@{/createMap}">Upload a Map</a>
+			<a th:if="${session.user != null and session.user.admin}" th:href="@{/admin}">Admin</a>
+			<a th:href="@{/guess}">Guess</a>
+			<a th:href="@{/photos}">Photos</a>
+			<a th:if="${session.user}" th:href="@{/logout}" th:text="Logout" style="float: right;"></a>
+		</nav>
+	</header>
+</body>
+</html>

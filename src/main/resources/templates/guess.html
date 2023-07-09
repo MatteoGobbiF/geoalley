@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Guess Maps</title>
+</head>
+<body>
+<div th:insert="fragments/header :: block-header"></div>
+
+<h3>You need help understanding what a map depicts or what year is it from? Upload it <a href="/createGuessMap">here</a></h3>
+
+<h2 style="text-align: center;">Help other users identify the missing details of these maps</h2>
+
+<table style="margin: 0 auto;" th:if="${maps != null && !maps.isEmpty()}">
+	<tr>
+		<th>Id</th>
+		<th>Descripion</th>
+		<th>Link</th>
+	</tr>
+	<tr th:each="map : ${maps}">
+		<td th:text="${map.id}"></td>
+		<td th:text="${map.description}"></td>
+		<td><a th:href="@{/map/{id}(id=${map.id})}" th:text="Open"></a></td>
+	</tr>
+</table>
+
+<p th:if="${maps == null || maps.isEmpty()}" style="text-align: center;">There are currently no maps of this kind</p>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Profile</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<div>
+	<p th:text="'Username: '+${user.username}"></p>
+	<p th:text="'Email: '+${user.email}"></p>
+	<a th:href="@{/profile/edit/{id}(id=${user.id})}">Edit profile</a>
+</div>
+
+<div>
+	<h3>My Maps:</h3>
+	<table th:if="${detailedMaps != null && !detailedMaps.isEmpty()}">
+		<tr>
+			<th>Title</th>
+			<th>Open</th>
+		</tr>
+		<tr th:each="map : ${detailedMaps}">
+			<td th:text="${map.title}"></td>
+			<td><a th:href="@{/map/{id}(id=${map.id})}">Open</a></td>
+		</tr>
+	</table>
+	<p th:if="${detailedMaps == null || detailedMaps.isEmpty()}">You have't uploaded any maps</p>
+</div>
+
+<div>
+	<h3>My maps help requests:</h3>
+	<table th:if="${guessMaps != null && !guessMaps.isEmpty()}">
+		<tr>
+			<th>Id</th>
+			<th>Open</th>
+		</tr>
+		<tr th:each="map : ${guessMaps}">
+			<td th:text="${map.id}"></td>
+			<td><a th:href="@{/map/{id}(id=${map.id})}">Open</a></td>
+		</tr>
+	</table>
+	<p th:if="${guessMaps == null || guessMaps.isEmpty()}">You have't uploaded any maps of this kind</p>	
+</div>
+
+<div>
+	<h3>My photos help requests:</h3>
+	<table th:if="${photos != null && !photos.isEmpty()}">
+		<tr>
+			<th>Id</th>
+			<th>Open</th>
+		</tr>
+		<tr th:each="photo : ${photos}">
+			<td th:text="${photo.id}"></td>
+			<td><a th:href="@{/photo/{id}(id=${photo.id})}">Open</a></td>
+		</tr>
+	</table>
+	<p th:if="${photos == null || photos.isEmpty()}">You have't uploaded any photos</p>	
+</div>
+
+</body>
+</html>

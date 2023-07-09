@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Upload Photo</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h2>You can upload here a photo if you don't know where it was taken other users will try to help you</h2>
+
+<p>Please give as much information as possible in the description to make it easier for other users to help you</p>
+
+<div th:if="${message}" th:text="${message}"></div>
+
+<form method="post" action="/createPhoto" enctype="multipart/form-data">
+	<div>
+		<label for="description">Description:</label>
+		<textarea name="description" rows="10" cols="60"></textarea>
+	</div>
+	<div>
+		<label for="file">File:</label>
+		<input type="file" id="file" name="file" accept=".pdf, .jpg, .png" required>
+	</div>
+	<button type="submit">Submit</button>
+</form>
+</body>
+</html>

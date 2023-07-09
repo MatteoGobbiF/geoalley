@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Report a photo</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h2>Report a photo</h2>
+
+<p>Please describe what's wrong with the photo</p>
+
+<form th:action="@{/photo/report/{id}(id=${photo.id})}" method="post">
+	<textarea name="description" rows="10" cols="60" required></textarea>
+	<br><br>
+	<input type="submit" value="Report">
+	<input type="button" value="Cancel" th:onclick="'window.location=\'/photo/' + ${photo.id} + '\''">
+</form>
+<div th:if="${message}" th:text="${message}"></div>
+</body>
+</html>

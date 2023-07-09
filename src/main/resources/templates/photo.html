@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Photo</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h3 style="text-align: center;">If you have any idea about where this photo might have been taken please try guessing below</h3>
+
+<img th:src="'http://localhost:8080/' + ${photo.url}" width="100%" height="500" style="object-fit: contain;">
+
+<p><strong>Description:</strong> <span th:text="${photo.description}"></span></p>
+
+<a th:if="${session.user.admin || session.user.id == photo.user.id}" th:href="@{/photo/edit/{id}(id=${photo.id})}">Edit</a><br>
+<a th:href="@{/photo/report/{id}(id=${photo.id})}">Report</a>
+
+
+<h4>Guess where it was taken by clicking on the map below</h4>
+<form th:action="@{/photo/{id}/guess(id=${photo.id})}" method="post">
+	<div style="display: flex; justify-content: center;">
+		<div style="margin-right: 10px;">
+			<label for="latitude">Latitude:</label>
+			<input type="number" id="latitude" name="latitude" min="-180" max="+180" step="any" required>
+		</div>
+		<div>
+			<label for="longitude">Longitude:</label>
+			<input type="number" id="longitude" name="longitude" min="-180" max="+180" step="any" required>
+		</div>
+	</div>
+	<div style="display: flex;">
+		<div id="map" style="width: 70%; height: 500px; margin-right: 10px;"></div>
+		<textarea name="comment"></textarea>
+	</div>
+	<div style="display: flex; justify-content: center; margin-top: 10px;">
+		<input type="submit" value="Guess!">
+	</div>
+</form>
+
+<h2>Guesses:</h2>
+
+<a th:href="@{/photo/{id}/guesses(id=${photo.id})}">See all guesses</a>
+    
+</body>
+
+
+<script th:inline="javascript">
+	function initMap() {
+		
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 45.4642, lng: 9.1900},
+			zoom: 8
+	});
+	
+		google.maps.event.addListener(map, 'click', function(event) {
+			document.getElementById("latitude").value = event.latLng.lat();
+			document.getElementById("longitude").value = event.latLng.lng();
+		});
+	}	  
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrgZTh4zqmHXlGnAF0Zc98Y4zLqHOsJKI&callback=initMap" async defer></script>
+
+</html>

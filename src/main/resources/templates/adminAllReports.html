@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>All reports</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h1>All Reports</h1>
+<a th:href="@{/admin}">Go back</a>
+
+<div style="display: flex; justify-content: space-between;">
+	
+	<!-- Tabella report mappe -->
+	<div style="float:left; width:49%; margin-right: 2%;">
+		<h3>Map reports</h3>
+		<table th:if="${reports != null && !reports.isEmpty()}">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Content</th>
+					<th>Map</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${reports}">
+					<td th:text="${report.id}"></td>
+					<td th:text="${report.description}"></td>
+					<td><a th:href="@{/map/{id}(id=${report.map.id})}">Open Map</a></td>
+					<td><td th:text="${report.open} ? 'Open' : 'Closed'"></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:if="${reports == null || reports.isEmpty()}">There are no reports on maps</p>
+	</div>
+	
+	<!-- Tabella report foto -->
+	<div style="float:left; width:49%;">
+		<h3>Photo reports</h3>
+		<table th:if="${reportPhotos != null && !reportPhotos.isEmpty()}">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Content</th>
+					<th>Photo</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${reportPhotos}">
+					<td th:text="${report.id}"></td>
+					<td th:text="${report.description}"></td>
+					<td><a th:href="@{/map/{id}(id=${report.photo.id})}">Open Photo</a></td>
+					<td th:text="${report.open} ? 'Open' : 'Closed'"></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:if="${reportPhotos == null || reportPhotos.isEmpty()}">There are no reports on photos</p>	
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Map Details</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h3 th:text="${map.title}"></h3>
+<div th:if="${message}" th:text="${message}"></div>
+<div style="display: inline-block;">
+	Tags: <span th:each="tag : ${tags}" th:text="${tag.tagName} + ' - '">Tags: </span>
+</div>
+
+
+<iframe th:src="'http://localhost:8080/' + ${map.url}" width="100%" height="500"></iframe> 
+
+<div style="display: flex; width:100%">
+	<div id="map" style=" float: left; width: 500px; height: 500px;"></div>
+	
+	<div style="position: absolute; right: 0; width: 40%;">
+		<p><strong>Description:</strong> <span th:text="${map.description}"></span></p>
+		<p><strong>Year:</strong><span th:if="${!map.exactYear}">Circa </span><span th:text="${map.year}"></span></p>
+		<a th:if="${auth}" th:href="@{/edit/{id}(id=${map.id})}">Edit</a><br>
+		<a th:if="${session.user}" th:href="@{/report/{id}(id=${map.id})}">Report</a>
+	</div>
+</div>
+
+<h4>Comments</h4>
+<div th:if="${session.user}">
+	<div th:if="${commentMessage}" th:text="${commentMessage}"></div>
+	<div th:if="${map.comments.size() > 0}">
+		<ul>
+			<li th:each="comment : ${map.comments}">
+				<p th:if="${session.user.admin}"><strong>User:</strong> <a th:href="@{/profile/{id}(id=${comment.user.id})}" th:text="${comment.user.username}"></a></p>
+				<p><strong>Comment:</strong> <span th:text="${comment.content}"></span></p>
+				<p><strong>Date:</strong> <span th:text="${#temporals.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}"></span></p>
+				<p th:if="${session.user.admin || session.user.id == comment.user.id || session.user.id == map.user.id}">
+				<a th:href="@{/map/{mapId}/comment/{commentId}/delete(mapId=${map.id}, commentId=${comment.id})}">Delete</a></p>
+			</li>
+		</ul>
+	</div>
+	<div th:if="${map.comments.size() == 0}">
+		<p>There are no comments for this map yet, be the first one to comment below!</p>
+	</div>
+	
+	<h4>Add a comment</h4>
+	<form th:action="@{/map/{id}/comment(id=${map.id})}" method="post">
+		<textarea style="width:70%" name="content" required></textarea><br>
+		<input type="submit" value="Add comment">
+	</form>
+</div>
+
+<div th:unless="${session.user}">
+	<p>You need to be logged in to read and make comments</p>
+</div>
+
+<script>
+	function initMap() {
+		
+		var myLatLng = {lat: [[${map.latitude}]], lng: [[${map.longitude}]]};
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 8,
+			center: myLatLng
+		});
+		
+		var marker = new google.maps.Marker({
+			position: myLatLng,
+			map: map
+		});
+	}
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrgZTh4zqmHXlGnAF0Zc98Y4zLqHOsJKI&callback=initMap"></script>
+
+</body>
+</html>

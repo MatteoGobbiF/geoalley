@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Profile</title>
+</head>
+<body>
+
+<div th:insert="fragments/header :: block-header"></div>
+
+<h1>Edit Profile</h1>
+
+<!-- Username and email form -->
+<form th:action="@{/profile/edit/{id}(id=${user.id})}" method="post">
+	<div>
+		<label for="username">Username:</label>
+		<input type="text" name="username" th:value="${user.username}" required/>
+	</div>
+	<div>
+		<label for="email">Email:</label>
+		<input type="email" name="email" th:value="${user.email}" required/>
+	</div>
+	<button type="submit">Save Changes</button>
+</form>
+
+<div th:if="${message}" th:text="${message}"></div>
+
+<h2>Change Password</h2>
+
+<!-- Password form -->
+<form th:action="@{/profile/editPassword/{id}(id=${user.id})}" method="post">
+	<div>
+		<label for="oldPassword">Old Password:</label>
+		<input type="password" name="oldPassword" required/>
+	</div>
+	<div>
+		<label for="newPassword">New Password:</label>
+		<input type="password" name="newPassword" required/>
+	</div>
+	<div>
+		<label for="repeatPassword">Repeat New Password:</label>
+		<input type="password" name="repeatPassword" required/>
+	</div>
+	<button type="submit">Change Password</button>
+</form>
+
+<div th:if="${passMessage}" th:text="${passMessage}"></div>
+
+</body>
+</html>
